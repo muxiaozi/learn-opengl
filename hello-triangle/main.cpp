@@ -4,10 +4,16 @@
 
 using namespace std;
 
-float vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-    0.5f, -0.5f, 0.0f,
-    0.0f, 0.5f, 0.0f
+GLfloat vertices[] = {
+    -0.5f, -0.5f, 0.0f, // 左下
+    0.5f, -0.5f, 0.0f,  // 右下
+    0.5f, 0.5f, 0.0f,   // 右上
+    -0.5f, 0.5f, 0.0f   // 左上
+};
+
+GLuint indices[] = {
+    0, 1, 2,
+    0, 2, 3
 };
 
 // 顶点着色器程序
@@ -113,24 +119,34 @@ int main()
     GLuint VBO;
     glCreateBuffers(1, &VBO);
 
+    GLuint EBO;
+    glCreateBuffers(1, &EBO);
+
+    // 绑定顶点数组对象
     glBindVertexArray(VAO);
+    // 把顶点数组复制到顶点缓冲中，供OpenGL使用
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // 使用上一步绑定的VBO中的数据
+    // 赋值索引数组到索引缓冲中，供OpenGL使用
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // 使用上一步绑定的VBO中的数据，设定顶点属性指针
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while (!glfwWindowShouldClose(window))
     {
         handleInput(window);
 
-        glClearColor(1.0f, 0.3f, 0.7f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

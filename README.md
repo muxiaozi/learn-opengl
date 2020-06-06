@@ -34,3 +34,13 @@
 6. 测试与混合
 
 注：带 `*` 为可编程，使用 GLSL (OpenGL Shading Language) 语言
+
+### 常用函数
+
+#### 设置绘制模式
+
+```c++
+// 线框 GL_LINE
+// 填充 GL_FILL
+glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+```
