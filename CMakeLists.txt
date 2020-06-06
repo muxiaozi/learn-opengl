@@ -20,3 +20,4 @@ link_libraries(
 )
 
 add_subdirectory(playground)
+add_subdirectory(hello-triangle)
