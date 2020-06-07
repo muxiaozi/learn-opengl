@@ -1,6 +1,7 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <shader.hpp>
 
 using namespace std;
 
@@ -78,46 +79,7 @@ int main()
             glViewport(0, 0, width, height);
         });
 
-    // Vertex Shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertexShader);
-
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) 
-    {
-        glGetShaderInfoLog(vertexShader, sizeof(infoLog), nullptr, infoLog);
-        cout << "Compile shader fail: " << infoLog << endl;
-    }
-
-    // Fragment Shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, sizeof(infoLog), nullptr, infoLog);
-        cout << "Compile shader fail: " << infoLog << endl;
-    }
-
-    // Shader Program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    glGetShaderiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(shaderProgram, sizeof(infoLog), nullptr, infoLog);
-        cout << "Link shader fail: " << infoLog << endl;
-    }
+    Shader shader = Shader::fromSource(vertexShaderSource, fragmentShaderSource);
 
     GLuint VAO;
     glCreateVertexArrays(1, &VAO);
@@ -151,11 +113,11 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
+        shader.use();
 
         GLfloat timeValue = glfwGetTime();
         GLfloat greenColor = sin(timeValue) / 2.0f + 0.5f;
-        int ourColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        int ourColorLocation = glGetUniformLocation(shader.getProgramId(), "ourColor");
         glUniform4f(ourColorLocation, 1.0f, greenColor, 1.0f, 1.0f);
 
         glBindVertexArray(VAO);

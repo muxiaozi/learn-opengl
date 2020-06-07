@@ -4,7 +4,9 @@ project(OpenGLDemo)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/3rdparty/glfw-3.3.2.bin.WIN64/include
-    ${CMAKE_SOURCE_DIR}/3rdparty/glad-3.3-core/include)
+    ${CMAKE_SOURCE_DIR}/3rdparty/glad-3.3-core/include
+    ${CMAKE_SOURCE_DIR}
+)
 
 link_directories(
     ${CMAKE_SOURCE_DIR}/3rdparty/glfw-3.3.2.bin.WIN64/lib-vc2019
