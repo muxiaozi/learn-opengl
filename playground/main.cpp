@@ -46,6 +46,10 @@ int main()
             glViewport(0, 0, width, height);
         });
 
+    int nrAttributes;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+    cout << "Max vertex attribs: " << nrAttributes << endl;
+
     while (!glfwWindowShouldClose(window)) 
     {
         handleInput(window);
