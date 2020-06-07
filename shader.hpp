@@ -26,11 +26,14 @@ Shader Shader::fromFile(const std::string& vertexPath, const std::string& fragme
 {
 	std::string vertexSource;
 	std::string fragmentSource;
-
+	std::ifstream vertexFile;
+	std::ifstream fragmentFile;
+	vertexFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	try 
 	{
-		std::ifstream vertexFile(vertexPath, std::ios::out);
-		std::ifstream fragmentFile(fragmentPath, std::ios::out);
+		vertexFile.open(vertexPath);
+		fragmentFile.open(fragmentPath);
 		std::stringstream vertexStream, fragmentStream;
 		vertexStream << vertexFile.rdbuf();
 		fragmentStream << fragmentFile.rdbuf();
@@ -39,9 +42,9 @@ Shader Shader::fromFile(const std::string& vertexPath, const std::string& fragme
 		vertexSource = vertexStream.str();
 		fragmentSource = fragmentStream.str();
 	}
-	catch (std::ifstream::failure e)
+	catch (std::ifstream::failure& e)
 	{
-		std::cerr << "read shader fail: " << e.what() << std::endl;
+		std::cerr << "Read shader file fail: " << e.what() << std::endl;
 		return Shader();
 	}
 
