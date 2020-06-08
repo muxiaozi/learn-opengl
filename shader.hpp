@@ -15,6 +15,8 @@ public:
 
 	GLuint getProgramId();
 
+	void setInt(const std::string& name, GLint value);
+
 private:
 	Shader() = default;
 	Shader(const GLchar* vertexSource, const GLchar* fragmentSource);
@@ -64,6 +66,12 @@ inline void Shader::use()
 inline GLuint Shader::getProgramId()
 {
 	return _programId;
+}
+
+inline void Shader::setInt(const std::string& name, GLint value)
+{
+	GLint location = glGetUniformLocation(_programId, name.data());
+	glUniform1i(location, value);
 }
 
 inline Shader::Shader(const GLchar* vertexSource, const GLchar* fragmentSource)

@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 project(OpenGLDemo)
 
+if(WIN32)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+endif(WIN32)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/3rdparty/glfw-3.3.2.bin.WIN64/include
     ${CMAKE_SOURCE_DIR}/3rdparty/glad-3.3-core/include
