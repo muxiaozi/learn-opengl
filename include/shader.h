@@ -16,6 +16,7 @@ public:
 	GLuint getProgramId();
 
 	void setInt(const std::string& name, GLint value);
+	void setMat4(const std::string& name, const GLfloat* value);
 
 private:
 	Shader() = default;
@@ -72,6 +73,12 @@ inline void Shader::setInt(const std::string& name, GLint value)
 {
 	GLint location = glGetUniformLocation(_programId, name.data());
 	glUniform1i(location, value);
+}
+
+inline void Shader::setMat4(const std::string& name, const GLfloat* value)
+{
+	GLint location = glGetUniformLocation(_programId, name.data());
+	glUniformMatrix4fv(location, 1, GL_FALSE, value);
 }
 
 inline Shader::Shader(const GLchar* vertexSource, const GLchar* fragmentSource)

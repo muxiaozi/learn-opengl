@@ -125,6 +125,14 @@ int main()
     shader.setInt("wall", 0);
     shader.setInt("face", 1);
 
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f));
+    shader.setMat4("view", glm::value_ptr(view));
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(45.0f), 800.0f / 800.0f, 0.1f, 100.0f);
+    shader.setMat4("projection", glm::value_ptr(projection));
+
     while (!glfwWindowShouldClose(window))
     {
         handleInput(window);
@@ -132,14 +140,10 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-        trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-
-        GLuint transformLoc = glGetUniformLocation(shader.getProgramId(), "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+        shader.setMat4("model", glm::value_ptr(model));
+        
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
