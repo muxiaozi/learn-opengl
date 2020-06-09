@@ -35,6 +35,20 @@
 
 注：带 `*` 为可编程，使用 GLSL (OpenGL Shading Language) 语言
 
+### Transform
+
+**构造变换矩阵**
+
+正确的变换顺序是：缩放 -> 旋转 -> 位移，如果不按照这个顺序，比如先位移，再缩放，那么位移的距离也会被缩放
+
+```c++
+// 使用glm库要反着写，位移 -> 旋转 -> 缩放
+glm::mat4 trans = glm::mat4(1.0f);  // 单位矩阵
+trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f)); // 位移 x + 1, y + 1
+trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); // 逆时针旋转90°
+trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f)); // 整体缩放到1/2
+```
+
 ### 常用函数
 
 #### 设置绘制模式

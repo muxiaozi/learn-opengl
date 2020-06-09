@@ -84,7 +84,7 @@ int main()
         glfwTerminate();
     }
 
-    Shader shader = Shader::fromFile("texture.vs", "texture.gs");
+    Shader shader = Shader::fromFile("texture.vert", "texture.frag");
     shader.use();
     
     GLuint VAO, VBO, EBO;
